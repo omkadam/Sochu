@@ -25,25 +25,21 @@ const main = async () => {
         
 
         await db.insert(schema.courses).values([
+            
             {
                 id: 1,
-                title: "Spanish",
-                imageSrc: "/es.svg"
+                title: "Series 1 - Thinking Edition",
+                imageSrc: "/Series-1.png"
             },
             {
                 id: 2,
-                title: "Italian",
-                imageSrc: "/it.svg"
+                title: "Series 2 - Feeling Edition",
+                imageSrc: "/Series-2.png"
             },
             {
                 id: 3,
-                title: "French",
-                imageSrc: "/fr.svg"
-            },
-            {
-                id: 5,
-                title: "Croatian",
-                imageSrc: "/hr.svg"
+                title: "Series 3 - Doing Edition",
+                imageSrc: "/Series-3.png"
             }
         ])
 

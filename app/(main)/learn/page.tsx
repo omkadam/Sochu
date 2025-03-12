@@ -37,6 +37,7 @@ const LearnPage = async () => {
                         <Unit id={unit.id} order={unit.order} description={unit.description} title={unit.title} lessons={unit.lessons} activeLesson={courseProgress.activeLesson} activeLessonPercentage={lessonPercentage}/>
                     </div>
                 ))}
+                
             </FeedWrapper>
         </div>
     )

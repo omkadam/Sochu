@@ -5,6 +5,8 @@ import { getUserProgress } from "@/db/queries"
 import Image from "next/image"
 import { redirect } from "next/navigation"
 import { Items } from "./items"
+import Checkout from "@/components/payment-button";
+
 
 const ShopPage = async () => {
     const userProgressData = getUserProgress()
@@ -31,6 +33,7 @@ const ShopPage = async () => {
                         Spend you points on cool stuff
                     </p>
                     <Items hearts={userProgress.hearts} points={userProgress.points} hasActiveSubscription={false}/>
+                    {/* <Checkout /> */}
                 </div>
             </FeedWrapper>
         </div>

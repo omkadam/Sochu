@@ -1,6 +1,7 @@
 "use client"
 
 import { refillHearts } from "@/actions/user-progress";
+import Checkout from "@/components/payment-button";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useTransition } from "react";
@@ -57,6 +58,18 @@ export const Items = ({
                     
                     }
                 </Button>
+            </div>
+            <div className="flex items-center w-full p-4 pt-8 gap-x-4 border-t-2">
+                <Image src="/unlimited.svg" alt="Unlimited" height={60} width={60}/>
+                <div className="flex-1">
+                    <p className="text-neutral-700 text-base lg:text-xl font-bold">
+                        Unlimited Hearts
+                    </p>
+                </div>
+                {/* <Button disabled={pending || hasActiveSubscription} onClick={() => {}}>
+                    {hasActiveSubscription ? "active" : "upgrade"}
+                </Button> */}
+                <Checkout />
             </div>
         </ul>
     )
