@@ -105,5 +105,3 @@ export const LessonButton = ({ id, index, totalCount, locked, current, percentag
     </div>
   );
 };
-
-
