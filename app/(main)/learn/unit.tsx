@@ -24,7 +24,6 @@ export const Unit = ({id,order,title,description,lessons,activeLesson,activeLess
                 {lessons.map((lesson, index) => {
                     const isCurrent = lesson.id === activeLesson?.id;
                     const isLocked = !lesson.completed && !isCurrent;
-
                     return (
                         <LessonButton key={lesson.id} id={lesson.id} index={index} totalCount={lessons.length -1} current={isCurrent} locked={isLocked} percentage={activeLessonPercentage} />
                     )

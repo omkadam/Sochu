@@ -1,5 +1,6 @@
+"use client"
 import { Button } from "@/components/ui/button";
-import { NotebookText } from "lucide-react";
+import { NotebookText, UsersRound } from "lucide-react";
 import Link from "next/link";
 
 type Props = {
@@ -8,8 +9,11 @@ type Props = {
 }
 
 export const UnitBanner = ({title,description}:Props) => {
+    const openReaderApp = () => {
+        window.open("http://192.168.1.71:3000/reader", "_self"); // Opens in a new tab
+    };
     return (
-        <div className="w-full rounded-xl bg-green-500 p-5 text-white flex items-center justify-between">
+        <div className="w-full rounded-xl bg-[#009aef] p-5 text-white flex items-center justify-between border-b-4 border-[#1175c9]">
             <div className="space-y-2.5">
                 <h3 className="text-2xl font-bold">
                     {title}
@@ -24,6 +28,13 @@ export const UnitBanner = ({title,description}:Props) => {
                     Continue
                 </Button>
             </Link>
+            {/* <Button onClick={openReaderApp}>
+                Read
+            </Button> */}
+            <NotebookText height={"50px"} width={"50px"} onClick={openReaderApp}/>
+            {/* <UsersRound height={"50px"} width={"50px"}/> */}
+            
         </div>
+        
     )
 }
