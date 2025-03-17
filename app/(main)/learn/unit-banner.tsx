@@ -21,7 +21,7 @@ export const UnitBanner = ({ title, description }: Props) => {
             
             {/* Image with redirect behavior */}
             <img
-                src="/padhle.svg"  // Icon for the link
+                src="https://d16ho1g3lqitul.cloudfront.net/padhle.svg"  // Icon for the link
                 alt="Read Now"
                 className="cursor-pointer h-20 w-20"
                 onClick={openReaderApp} // Redirect on click

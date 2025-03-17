@@ -19,6 +19,7 @@ type Props = {
 export const Unit = ({id,order,title,description,lessons,activeLesson,activeLessonPercentage}: Props) => {
     return (
         <>
+            
             <UnitBanner title={title} description={description}/>
             <div className="flex items-center flex-col relative">
                 {lessons.map((lesson, index) => {

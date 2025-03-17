@@ -27,10 +27,10 @@ export const LessonButton = ({ id, index, totalCount, locked, current, percentag
 
   // ✅ **Lesson Icon Selection**
   const iconSrc = isCompleted
-    ? "/done2.svg"
+    ? "https://d16ho1g3lqitul.cloudfront.net/done2.svg"
     : isLast
-    ? "/crown2.svg"
-    : "/star2.svg";
+    ? "https://d16ho1g3lqitul.cloudfront.net/crown2.svg"
+    : "https://d16ho1g3lqitul.cloudfront.net/star2.svg";
 
   const href = isCompleted ? `/lesson/${id}` : "/lesson";
 
@@ -94,7 +94,7 @@ export const LessonButton = ({ id, index, totalCount, locked, current, percentag
           )}
         >
           <Image
-            src="/sochuloop.gif"
+            src="https://d16ho1g3lqitul.cloudfront.net/sochuloop.gif"
             alt="Extra Icon"
             width={150}
             height={150}
