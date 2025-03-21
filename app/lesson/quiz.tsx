@@ -16,6 +16,7 @@ import { ResultCard } from "./result-card";
 import { useRouter } from "next/navigation";
 import { useHeartsModal } from "@/store/use-hearts-modal";
 import { usePracticeModal } from "@/store/use-practice-modal";
+import { useUser } from "@clerk/nextjs";
 
 
 type Props = {
@@ -27,9 +28,14 @@ type Props = {
         challengeOptions: typeof challengeOptions.$inferSelect[];
     })[];
     userSubscription: any;
+    
 }
 
+
+
 export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initialLessonChallenges, userSubscription}: Props) => {
+
+    const { user } = useUser();
 
     const { open: openHeartsModal } = useHeartsModal();
     const { open: openPracticeModal } = usePracticeModal();
@@ -55,6 +61,7 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
         incorrectControls
     ] = useAudio({ src: "/incorrect.wav" })
     const [pending, startTransition] = useTransition()
+    const [customInput, setCustomInput] = useState<string>("")
     const [lessonId] = useState(initialLessonId)
     const [hearts, setHearts] = useState(initialHearts)
     const [percentage, setPercentage] = useState(() => {
@@ -83,7 +90,7 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
 
     const onContinue = () => {
         if(!selectedOption) return;
-
+    
         if(status === "wrong"){
             setStatus("none");
             setSelectedOption(undefined)
@@ -95,13 +102,14 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
             setSelectedOption(undefined)
             return;
         }
-
-        const correctOption = options.find((option) => option.correct);
-        if(!correctOption) {
-            return;
-        }
-
-        if(correctOption.id === selectedOption) {
+    
+        // ✅ Get all correct option IDs
+        const correctOptionIds = options
+            .filter((option) => option.correct)
+            .map((o) => o.id);
+    
+        if(correctOptionIds.includes(selectedOption)) {
+            // ✅ User selected a correct option
             startTransition(() => {
                 upsertChallengeProgress(challenge.id)
                     .then((response) => {
@@ -112,7 +120,7 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
                         correctControls.play()
                         setStatus("correct")
                         setPercentage((prev) => prev + 100 / challenges.length)
-
+    
                         if(initialPercentage === 100) {
                             setHearts((prev) => Math.min(prev + 1, 5));
                         }
@@ -120,6 +128,7 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
                     .catch(() => toast.error("Something went wrong, please try again."))
             })
         } else {
+            // ❌ User selected a wrong option
             startTransition(() => {
                 reduceHearts(challenge.id)
                     .then((response) => {
@@ -129,7 +138,7 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
                         }
                         incorrectControls.play()
                         setStatus("wrong")
-
+    
                         if(!response?.error) {
                             setHearts((prev) => Math.max(prev - 1, 0));
                         }
@@ -138,6 +147,7 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
             })
         }
     }
+                
 
     if(!challenge){
         return (
@@ -173,12 +183,16 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
                     <div className="lg:min-h-[350px] lg:w-[600px] w-full px-6 lg:px-0 flex flex-col gap-y-12">
                         <h1 className="text-lg lg:text-3xl text-center lg:text-start font-bold text-neutral-700">
                             {title}
+                            {/* <img src={challenge.imageUrl ?? undefined} alt="Question Image" /> */}
+                            {challenge.imageUrl && (
+                                <img src={challenge.imageUrl} alt="Question Image" />
+                            )}
                         </h1>
                         <div>
                             {challenge.type === "ASSIST" && (
                                 <QuestionBubble question={challenge.question}/>
                             )}
-                            <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type}/>
+                            <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type} challengeId={challenge.id} userId={user?.id ?? ""}/>
                         </div>
                     </div>
                 </div>

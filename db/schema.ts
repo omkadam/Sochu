@@ -53,7 +53,8 @@ export const challenges = pgTable("challenges", {
     lessonId: integer("lesson_id").references(() => lessons.id, {onDelete: "cascade"}).notNull(),
     type: challengesEnum("type").notNull(),
     question: text("question").notNull(),
-    order: integer("order").notNull()
+    order: integer("order").notNull(),
+    imageUrl: text("image_url")
 })
 
 
@@ -125,3 +126,18 @@ export const userSubscription = pgTable("user_subscription", {
 
 
 })
+
+export const customAnswers = pgTable("custom_answers", {
+    id: serial("id").primaryKey(),
+    challengeId: integer("challenge_id").references(() => challenges.id, { onDelete: "cascade" }).notNull(),
+    userId: text("user_id").notNull(),
+    answerText: text("answer_text").notNull(),
+    createdAt: timestamp("created_at").defaultNow()
+  })
+  
+  export const customAnswersRelations = relations(customAnswers, ({ one }) => ({
+    challenge: one(challenges, {
+      fields: [customAnswers.challengeId],
+      references: [challenges.id]
+    })
+  }))

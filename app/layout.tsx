@@ -1,14 +1,14 @@
 import type { Metadata } from "next";
 import { Nunito } from "next/font/google";
-import { ClerkProvider } from '@clerk/nextjs'
-import { Toaster } from "@/components/ui/sonner"
+import { ClerkProvider } from '@clerk/nextjs';
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 import { ExitModal } from "@/components/modals/exit-modal";
 import { HeartsModal } from "@/components/modals/hearts-modal";
 import { PracticeModal } from "@/components/modals/practice-modal";
+import Head from "next/head"; // 👈 Import Head
 
-
-const font = Nunito({subsets: ["latin"]})
+const font = Nunito({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -23,6 +23,10 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
+        <Head>
+          {/* 👇 Add this meta tag to disable zoom */}
+          <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+        </Head>
         <body className={font.className}>
           <Toaster />
           <ExitModal />
@@ -32,10 +36,5 @@ export default function RootLayout({
         </body>
       </html>
     </ClerkProvider>
-    
   );
 }
-
-
-
-

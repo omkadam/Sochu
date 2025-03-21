@@ -40,7 +40,7 @@ export const LessonButton = ({ id, index, totalCount, locked, current, percentag
 
   return (
     
-    <div className="relative flex justify-center">
+    <div className="relative flex justify-center ">
       <Link href={href} aria-disabled={locked} style={{ pointerEvents: locked ? "none" : "auto" }}>
         <div
           className="relative"

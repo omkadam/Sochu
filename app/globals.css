@@ -16,6 +16,11 @@ body,
   
 }
 
+html, body {
+  touch-action: manipulation;
+  overscroll-behavior: none;
+}
+
 
 :root {
   --background: oklch(1 0 0);
