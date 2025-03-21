@@ -89,64 +89,100 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
     }
 
     const onContinue = () => {
-        if(!selectedOption) return;
-    
-        if(status === "wrong"){
-            setStatus("none");
-            setSelectedOption(undefined)
-            return;
+        if (!selectedOption && customInput.trim() === "") return;
+      
+        // Agar status wrong hai, reset karo
+        if (status === "wrong") {
+          setStatus("none");
+          setSelectedOption(undefined);
+          setCustomInput("");  // reset custom input too
+          return;
         }
-        if(status === "correct"){
-            onNext();
-            setStatus("none");
-            setSelectedOption(undefined)
-            return;
+        if (status === "correct") {
+          onNext();
+          setStatus("none");
+          setSelectedOption(undefined);
+          setCustomInput("");  // reset custom input
+          return;
         }
-    
-        // ✅ Get all correct option IDs
-        const correctOptionIds = options
+      
+        // ✅ If user selected option:
+        if (selectedOption) {
+          const correctOptionIds = options
             .filter((option) => option.correct)
             .map((o) => o.id);
-    
-        if(correctOptionIds.includes(selectedOption)) {
-            // ✅ User selected a correct option
+      
+          if (correctOptionIds.includes(selectedOption)) {
+            // Correct Option
             startTransition(() => {
-                upsertChallengeProgress(challenge.id)
-                    .then((response) => {
-                        if(response?.error === "hearts") {
-                            openHeartsModal();
-                            return;
-                        }
-                        correctControls.play()
-                        setStatus("correct")
-                        setPercentage((prev) => prev + 100 / challenges.length)
-    
-                        if(initialPercentage === 100) {
-                            setHearts((prev) => Math.min(prev + 1, 5));
-                        }
-                    })
-                    .catch(() => toast.error("Something went wrong, please try again."))
-            })
-        } else {
-            // ❌ User selected a wrong option
+              upsertChallengeProgress(challenge.id)
+                .then((response) => {
+                  if (response?.error === "hearts") {
+                    openHeartsModal();
+                    return;
+                  }
+                  correctControls.play();
+                  setStatus("correct");
+                  setPercentage((prev) => prev + 100 / challenges.length);
+      
+                  if (initialPercentage === 100) {
+                    setHearts((prev) => Math.min(prev + 1, 5));
+                  }
+                })
+                .catch(() => toast.error("Something went wrong, please try again."));
+            });
+          } else {
+            // Wrong Option
             startTransition(() => {
-                reduceHearts(challenge.id)
-                    .then((response) => {
-                        if(response?.error === "hearts"){
-                            openHeartsModal();
-                            return
-                        }
-                        incorrectControls.play()
-                        setStatus("wrong")
-    
-                        if(!response?.error) {
-                            setHearts((prev) => Math.max(prev - 1, 0));
-                        }
-                    })
-                    .catch(() => toast.error("Something went wrong please try again"))
-            })
+              reduceHearts(challenge.id)
+                .then((response) => {
+                  if (response?.error === "hearts") {
+                    openHeartsModal();
+                    return;
+                  }
+                  incorrectControls.play();
+                  setStatus("wrong");
+      
+                  if (!response?.error) {
+                    setHearts((prev) => Math.max(prev - 1, 0));
+                  }
+                })
+                .catch(() => toast.error("Something went wrong please try again"));
+            });
+          }
         }
-    }
+      
+        // ✅ If user typed custom input
+        if (customInput.trim() !== "") {
+          startTransition(() => {
+            fetch("/api/custom-answer", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                userId: user?.id ?? "",
+                challengeId: challenge.id,
+                answerText: customInput.trim(),
+              }),
+            })
+              .then((res) => {
+                if (res.ok) {
+                  correctControls.play();
+                  setStatus("correct");
+                  setPercentage((prev) => prev + 100 / challenges.length);
+                  if (initialPercentage === 100) {
+                    setHearts((prev) => Math.min(prev + 1, 5));
+                  }
+                } else {
+                  // Agar API fail hui toh wrong bhi dikha sakte ho
+                  incorrectControls.play();
+                  setStatus("wrong");
+                }
+              })
+              .catch(() => toast.error("Something went wrong, please try again."));
+          });
+        }
+      };
+      
                 
 
     if(!challenge){
@@ -192,12 +228,12 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
                             {challenge.type === "ASSIST" && (
                                 <QuestionBubble question={challenge.question}/>
                             )}
-                            <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type} challengeId={challenge.id} userId={user?.id ?? ""}/>
+                            <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type} challengeId={challenge.id} userId={user?.id ?? ""} customInput={customInput} setCustomInput={setCustomInput}/>
                         </div>
                     </div>
                 </div>
             </div>
-            <Footer disabled={pending || !selectedOption} status={status} onCheck={onContinue}/>
+            <Footer disabled={pending || (!selectedOption && customInput.trim() === "")} status={status} onCheck={onContinue}/>
         </>
     )
 }

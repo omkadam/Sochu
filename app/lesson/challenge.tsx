@@ -15,6 +15,8 @@ type Props = {
   type: typeof challenges.$inferSelect["type"];
   challengeId: number;
   userId: string; // 👈 Pass userId as prop
+  customInput: string;
+  setCustomInput: (value: string) => void;
 };
 
 export const Challenge = ({
@@ -25,7 +27,9 @@ export const Challenge = ({
   disabled,
   type,
   challengeId,
-  userId
+  userId,
+  customInput,
+  setCustomInput,
 }: Props) => {
 
   // 1️⃣ Custom answer state
@@ -89,12 +93,16 @@ export const Challenge = ({
       <div className="flex flex-col gap-2 mt-4">
         <h1 className="font-semibold">Write your custom answer</h1>
         <input
-          type="text"
-          value={customAnswer}
-          onChange={(e) => setCustomAnswer(e.target.value)}
-          className="border rounded px-2 py-1"
-          placeholder="Type your answer..."
-        />
+      type="text"
+      value={customAnswer}
+      onChange={(e) => {
+        setCustomAnswer(e.target.value);
+        setCustomInput(e.target.value); // 👈 propagate value to parent
+      }}
+      className="border p-2 rounded-md"
+      placeholder="Type your answer..."
+      disabled={disabled}
+    />
         <Button
           variant={"danger"}
           onClick={handleSubmit}
