@@ -40,8 +40,8 @@ export const LessonButton = ({ id, index, totalCount, locked, current, percentag
 
   return (
     
-    <div className="relative flex justify-center ">
-      <Link href={href} aria-disabled={locked} style={{ pointerEvents: locked ? "none" : "auto" }}>
+    <div className="relative flex justify-center " >
+      <Link href={href} aria-disabled={locked} style={{ pointerEvents: locked ? "none" : "auto" }} >
         <div
           className="relative"
           style={{
@@ -63,6 +63,7 @@ export const LessonButton = ({ id, index, totalCount, locked, current, percentag
                 }}
               >
                 <Button
+                  
                   size="rounded"
                   variant={locked ? "locked" : "lessonButtonsbhai"}
                   className="h-[70px] w-[70px] border-b-8"
