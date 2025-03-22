@@ -65,9 +65,10 @@ export const Unit = ({
       setShowLessons(true);
       setButtonClicked(true);
       localStorage.setItem(`unit-${id}-clicked`, "true");
+      router.push("http://13.233.10.17:4000/reader");
     } else {
       // Already clicked → redirect
-      router.push("http://192.168.1.50:3000/xyz");
+      router.push("http://13.233.10.17:4000/reader");
     }
   };
 

@@ -26,6 +26,7 @@ type Props = {
     initialLessonChallenges: (typeof challenges.$inferSelect & {
         completed: boolean;
         challengeOptions: typeof challengeOptions.$inferSelect[];
+        allowCustomAnswer?: boolean;
     })[];
     userSubscription: any;
     
@@ -228,7 +229,7 @@ export const Quiz = ({initialPercentage, initialHearts, initialLessonId, initial
                             {challenge.type === "ASSIST" && (
                                 <QuestionBubble question={challenge.question}/>
                             )}
-                            <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type} challengeId={challenge.id} userId={user?.id ?? ""} customInput={customInput} setCustomInput={setCustomInput}/>
+                            <Challenge options={options} onSelect={onSelect} status={status} selectedOption={selectedOption} disabled={pending} type={challenge.type} challengeId={challenge.id} userId={user?.id ?? ""} customInput={customInput} setCustomInput={setCustomInput} allowCustomAnswer={challenge.allowCustomAnswer}/>
                         </div>
                     </div>
                 </div>

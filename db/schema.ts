@@ -54,7 +54,8 @@ export const challenges = pgTable("challenges", {
     type: challengesEnum("type").notNull(),
     question: text("question").notNull(),
     order: integer("order").notNull(),
-    imageUrl: text("image_url")
+    imageUrl: text("image_url"),
+    allowCustomAnswer: boolean("allow_custom_answer").default(false).notNull()
 })
 
 

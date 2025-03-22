@@ -16,6 +16,7 @@ type Props = {
   userId: string;
   customInput: string;
   setCustomInput: (value: string) => void;
+  allowCustomAnswer?: boolean; // Add this prop
 };
 
 export const Challenge = ({
@@ -29,6 +30,7 @@ export const Challenge = ({
   userId,
   customInput,
   setCustomInput,
+  allowCustomAnswer, // New prop
 }: Props) => {
   return (
     <div
@@ -56,17 +58,19 @@ export const Challenge = ({
       ))}
 
       {/* Custom answer section */}
-      <div className="flex flex-col gap-2 mt-4">
-        <h1 className="font-semibold">Write your custom answer</h1>
-        <input
-          type="text"
-          value={customInput}
-          onChange={(e) => setCustomInput(e.target.value)}
-          className="border p-2 rounded-md"
-          placeholder="Type your answer..."
-          disabled={disabled || status !== "none"}
-        />
-      </div>
+      {allowCustomAnswer && (
+        <div className="flex flex-col gap-2 mt-4">
+          <h1 className="font-semibold">Write your custom answer</h1>
+          <input
+            type="text"
+            value={customInput}
+            onChange={(e) => setCustomInput(e.target.value)}
+            className="border p-2 rounded-md"
+            placeholder="Type your answer..."
+            disabled={disabled || status !== "none"}
+          />
+        </div>
+      )}
     </div>
   );
 };
