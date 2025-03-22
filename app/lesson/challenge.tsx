@@ -104,7 +104,7 @@ export const Challenge = ({
       disabled={disabled}
     />
         <Button
-          variant={"danger"}
+          variant={"super"}
           onClick={handleSubmit}
           disabled={loading || customAnswer.trim() === ""}
         >
