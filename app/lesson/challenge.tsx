@@ -3,7 +3,6 @@
 import { challengeOptions, challenges } from "@/db/schema";
 import { cn } from "@/lib/utils";
 import { Card } from "./card";
-import { Button } from "@/components/ui/button";
 import { useState } from "react";
 
 type Props = {
@@ -14,7 +13,7 @@ type Props = {
   disabled?: boolean;
   type: typeof challenges.$inferSelect["type"];
   challengeId: number;
-  userId: string; // 👈 Pass userId as prop
+  userId: string;
   customInput: string;
   setCustomInput: (value: string) => void;
 };
@@ -31,39 +30,6 @@ export const Challenge = ({
   customInput,
   setCustomInput,
 }: Props) => {
-
-  // 1️⃣ Custom answer state
-  const [customAnswer, setCustomAnswer] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
-
-  // 2️⃣ Submit handler
-  const handleSubmit = async () => {
-    if (customAnswer.trim() === "") return;
-    setLoading(true);
-    try {
-      const res = await fetch("/api/custom-answer", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          userId,
-          challengeId,
-          answerText: customAnswer,
-        }),
-      });
-      if (res.ok) {
-        setSuccess(true);
-        setCustomAnswer(""); // clear textbox
-      }
-    } catch (error) {
-      console.error("Error submitting custom answer:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   return (
     <div
       className={cn(
@@ -93,27 +59,13 @@ export const Challenge = ({
       <div className="flex flex-col gap-2 mt-4">
         <h1 className="font-semibold">Write your custom answer</h1>
         <input
-      type="text"
-      value={customAnswer}
-      onChange={(e) => {
-        setCustomAnswer(e.target.value);
-        setCustomInput(e.target.value); // 👈 propagate value to parent
-      }}
-      className="border p-2 rounded-md"
-      placeholder="Type your answer..."
-      disabled={disabled}
-    />
-        <Button
-          variant={"super"}
-          onClick={handleSubmit}
-          disabled={loading || customAnswer.trim() === ""}
-        >
-          {loading ? "Submitting..." : "Submit"}
-        </Button>
-
-        {success && (
-          <p className="text-green-600 font-medium">Answer submitted!</p>
-        )}
+          type="text"
+          value={customInput}
+          onChange={(e) => setCustomInput(e.target.value)}
+          className="border p-2 rounded-md"
+          placeholder="Type your answer..."
+          disabled={disabled || status !== "none"}
+        />
       </div>
     </div>
   );
