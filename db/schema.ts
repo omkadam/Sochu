@@ -1,7 +1,7 @@
 // inside this we will create our courses table
 
 import { relations } from "drizzle-orm";
-import { boolean, integer, pgEnum, pgTable, PgTable, serial, text, timestamp } from "drizzle-orm/pg-core";
+import { boolean, integer, pgEnum, pgTable, PgTable, serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
 
 
 export const courses = pgTable("courses", {
@@ -142,3 +142,33 @@ export const customAnswers = pgTable("custom_answers", {
       references: [challenges.id]
     })
   }))
+
+
+  export const books = pgTable("books", {
+    id: serial("id").primaryKey(),
+    title: text("title").notNull(),
+    author: text("author").notNull(),
+    coverImage: text("cover_image").notNull(),
+    createdAt: timestamp("created_at").defaultNow(),
+    updatedAt: timestamp("updated_at").defaultNow(),
+  });
+  
+  // Pages Table
+  export const pages = pgTable("pages", {
+    id: serial("id").primaryKey(),
+    bookId: integer("book_id").references(() => books.id).notNull(),
+    imageUrl: text("image_url").notNull(),
+    audioUrl: text("audio_url").notNull(),
+  });
+  
+  // Relations (for easy querying)
+  export const bookRelations = relations(books, ({ many }) => ({
+    pages: many(pages),
+  }));
+  
+  export const pageRelations = relations(pages, ({ one }) => ({
+    book: one(books, {
+      fields: [pages.bookId],
+      references: [books.id],
+    }),
+  }));

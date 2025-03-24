@@ -15,6 +15,7 @@ type Props = {
   locked?: boolean;
   current?: boolean;
   percentage: number;
+  bookReading?: boolean; // ✅ ADD THIS
 };
 
 export const LessonButton = ({ id, index, totalCount, locked, current, percentage }: Props) => {

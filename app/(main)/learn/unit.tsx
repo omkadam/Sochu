@@ -111,6 +111,7 @@ export const Unit = ({
                   current={isCurrent}
                   locked={!previousLessonCompleted}
                   percentage={activeLessonPercentage}
+                  
                 />
               </div>
             );
