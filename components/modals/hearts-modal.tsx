@@ -51,7 +51,7 @@ export const HeartsModal = () => {
                         <Button variant="primary" className="w-full" size="lg" onClick={onClick}>
                             Get unlimited hearts
                         </Button>
-                        <Button variant="primaryOutline" className="w-full" size="lg" onClick={close}>
+                        <Button variant="primary" className="w-full" size="lg" onClick={close}>
                             No thanks
                         </Button>
                     </div>

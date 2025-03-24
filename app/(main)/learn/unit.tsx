@@ -71,6 +71,7 @@ export const Unit = ({
       router.push("http://13.233.10.17:4000/reader");
     }
   };
+  
 
   return (
     <>
@@ -95,6 +96,7 @@ export const Unit = ({
         {showLessons &&
           lessons.map((lesson, index) => {
             const isCurrent = lesson.id === activeLesson?.id;
+            const previousLessonCompleted = index === 0 || lessons[index - 1].completed;
             return (
               <div
                 key={lesson.id}
@@ -107,7 +109,7 @@ export const Unit = ({
                   index={index}
                   totalCount={lessons.length - 1}
                   current={isCurrent}
-                  locked={false} // 👈 Always unlocked once button clicked
+                  locked={!previousLessonCompleted}
                   percentage={activeLessonPercentage}
                 />
               </div>
