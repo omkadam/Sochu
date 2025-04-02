@@ -14,6 +14,8 @@ const POINTS_TO_REFILL = 10;
 export const upsertUserProgress = async (courseId: number) => {
     const { userId } = await auth()
     const user = await currentUser()
+    console.log("userId:", userId);
+    console.log("user:", user);
 
     if(!userId || !user){
         throw new Error("Unauthorized")

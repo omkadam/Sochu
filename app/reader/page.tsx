@@ -5,6 +5,13 @@ import { useSwipeable } from "react-swipeable";
 import Image from "next/image";
 import { X, Volume2, VolumeX } from "lucide-react";
 import { useRouter } from "next/navigation";
+import {markChallengeCompleted} from "@/db/queries"
+
+
+type Props = {
+  challengeId: number;
+  userId: string;
+};
 
 interface Page {
   imageUrl: string;
@@ -20,6 +27,7 @@ interface Book {
 const BookReader = () => {
   const [book, setBook] = useState<Book | null>(null);
   const [currentPage, setCurrentPage] = useState(0);
+  const [bookcompleted, setbookcompleted] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const router = useRouter();
@@ -45,6 +53,12 @@ const BookReader = () => {
 
     fetchBook();
   }, []);
+
+  useEffect(() => {
+    if(currentPage === book?.pages.length! -1){
+      setbookcompleted(true);
+    }
+  },[currentPage])
 
   // Handle swipe gestures
   const handlers = useSwipeable({
@@ -74,6 +88,12 @@ const BookReader = () => {
     }
   };
 
+  //declaring handleBookCompleted function
+
+  const handleBookCompleted = () => {
+    router.push(`/learn?bookCompleted=${bookcompleted}`);
+  };
+
   // When audio ends, allow swipe again
   useEffect(() => {
     if (audioRef.current) {
@@ -94,7 +114,8 @@ const BookReader = () => {
       {/* Close Button */}
       <button
         className="absolute top-4 left-4 text-white p-2 rounded-full z-50"
-        onClick={() => router.back()}
+        // onClick={() => router.back({state: bookcompleted})}
+        onClick={handleBookCompleted}
       >
         <X size={24} />
       </button>

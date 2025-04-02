@@ -25,7 +25,7 @@ export default function Home() {
                 </Button>
               </SignUpButton>
               <SignInButton mode="modal" forceRedirectUrl="/learn" signUpForceRedirectUrl="/learn">
-                <Button size="lg" variant="primaryOutline" className="w-full">
+                <Button size="lg" variant="danger" className="w-full">
                   I already have an account
                 </Button>
               </SignInButton>

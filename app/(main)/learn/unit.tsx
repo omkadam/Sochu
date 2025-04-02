@@ -76,26 +76,56 @@ export const Unit = ({
   return (
     <>
       <UnitBanner title={title} description={description} />
-      <div className="flex items-center flex-col relative pb-50 z-10 pt-50">
+      <div className="flex items-center flex-col relative pb-50 z-10 pt-50">      
         {/* Button Always Visible */}
         <div className="flex flex-col items-center mb-4">
-          <img
-            src="/heart.svg"
-            alt="Crown"
-            className="w-20 h-20 mb-4 animate-bounce"
-          />
-          <button
-            onClick={handleButtonClick}
-            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
-          >
-            {buttonClicked ? "Read Book" : "Read the book first"}
-          </button>
-        </div>
+  <div className="relative flex justify-center top-3.5">
+    
+    {/* 🔥 BOUNCE TEXT TAG LIKE "START" */}
+    {!buttonClicked && (
+      <div className="absolute  left-1/2 -translate-x-1/2 px-2 py-2.5 border-2 font-bold uppercase text-[#009aef] bg-white rounded-xl animate-bounce tracking-wide z-10 whitespace-nowrap text-sm">
+      Read Book
+      <div className="absolute left-1/2 -bottom-2 w-0 h-0 border-x-8 border-x-transparent border-t-8 transform -translate-x-1/2" />
+      </div>
+    )}
+
+    <div
+      className="relative"
+      style={{
+        marginTop: 60,
+      }}
+    >
+      <button
+        onClick={handleButtonClick}
+        className="h-[70px] w-[70px] border-b-8  bg-green-500 rounded-full flex items-center justify-center shadow-md"
+        style={{
+          borderBottomColor: '#16a34a', // same as blue-500
+          borderBottomWidth: '8px',
+        }}
+      >
+        <img
+          src="https://d16ho1g3lqitul.cloudfront.net/Book-2.svg"
+          alt="Heart Icon"
+          width={50}
+          height={50}
+          className="pointer-events-none"
+        />
+      </button>
+    </div>
+  </div>
+
+  {/* <p className="mt-2 text-blue-500 font-semibold text-sm">
+    {buttonClicked ? "Read Book" : "Read the book first"}
+  </p> */}
+</div>
+
 
         {/* Lessons */}
         {showLessons &&
           lessons.map((lesson, index) => {
+            // agar lesson ka id active lessonId ke barabar hoo gaya toh ye current lesson hai
             const isCurrent = lesson.id === activeLesson?.id;
+            // index === 0 isliye kyu ki 1st wala humesha open rahega
             const previousLessonCompleted = index === 0 || lessons[index - 1].completed;
             return (
               <div
@@ -105,6 +135,7 @@ export const Unit = ({
                 }}
               >
                 <LessonButton
+                
                   id={lesson.id}
                   index={index}
                   totalCount={lessons.length - 1}
@@ -115,7 +146,7 @@ export const Unit = ({
                 />
               </div>
             );
-          })}
+        })}
       </div>
     </>
   );
